@@ -1,6 +1,6 @@
 import os
 
-import ipdb
+# import ipdb
 import matplotlib
 from tqdm import tqdm
 
@@ -10,7 +10,7 @@ from model import FasterRCNNVGG16
 from torch.utils import data as data_
 from trainer import FasterRCNNTrainer
 from utils import array_tool as at
-from utils.vis_tool import visdom_bbox
+# from utils.vis_tool import visdom_bbox
 from utils.eval_tool import eval_detection_voc
 
 matplotlib.use('agg')
@@ -71,25 +71,26 @@ def train(**kwargs):
 
             if (ii + 1) % opt.plot_every == 0:
                 if os.path.exists(opt.debug_file):
-                    ipdb.set_trace()
+                    # ipdb.set_trace()
+                    pass
 
                 # plot loss
                 trainer.vis.plot_many(trainer.get_meter_data())
 
                 # plot groud truth bboxes
                 ori_img_ = (img * 0.225 + 0.45).clamp(min=0, max=1) * 255
-                gt_img = visdom_bbox(at.tonumpy(ori_img_)[0], 
-                                    at.tonumpy(bbox_)[0], 
-                                    label_[0].numpy())
-                trainer.vis.img('gt_img', gt_img)
+                # gt_img = visdom_bbox(at.tonumpy(ori_img_)[0], 
+                #                     at.tonumpy(bbox_)[0], 
+                #                     label_[0].numpy())
+                # trainer.vis.img('gt_img', gt_img)
 
                 # plot predicti bboxes
                 _bboxes, _labels, _scores = trainer.faster_rcnn.predict(ori_img,visualize=True)
-                pred_img = visdom_bbox( at.tonumpy(ori_img[0]), 
-                                        at.tonumpy(_bboxes[0]),
-                                        at.tonumpy(_labels[0]).reshape(-1), 
-                                        at.tonumpy(_scores[0]))
-                trainer.vis.img('pred_img', pred_img)
+                # pred_img = visdom_bbox( at.tonumpy(ori_img[0]), 
+                #                         at.tonumpy(_bboxes[0]),
+                #                         at.tonumpy(_labels[0]).reshape(-1), 
+                #                         at.tonumpy(_scores[0]))
+                # trainer.vis.img('pred_img', pred_img)
 
                 # rpn confusion matrix(meter)
                 trainer.vis.text(str(trainer.rpn_cm.value().tolist()), win='rpn_cm')
